@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Age Calculator</title>
+  </head>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      padding: 0;
+      margin: 0;
+      font-family:
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Oxygen,
+        Ubuntu,
+        Cantarell,
+        "Open Sans",
+        "Helvetica Neue",
+        sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f5f5f5;
+    }
+    .agecal {
+      width: 350px;
+      min-height: 350px;
+      padding: 25px;
+      background: beige;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 25px;
+      border-radius: 15px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    label {
+      font-size: 1.5rem;
+      color: #333;
+    }
+
+    #date {
+      width: 80%;
+      padding: 10px;
+      border: 2px solid transparent;
+      border-radius: 5px;
+      outline: none;
+      transition: all 0.3s ease-in-out;
+    }
+
+    #date:hover,
+    #date:focus {
+      border: 2px solid violet;
+    }
+
+    #calculate {
+      padding: 10px 25px;
+      border: none;
+      border-radius: 7px;
+      background: violet;
+      color: white;
+      font-size: 1rem;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    #calculate:hover {
+      background: purple;
+      transform: scale(1.05);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    #calculate:active {
+      transform: scale(0.98);
+    }
+
+    #result {
+      font-size: 1rem;
+      font-weight: bold;
+      text-align: center;
+      color: #333;
+      margin-top: 0%;
+    }
+
+    #category {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: violet;
+      margin-top: -10%;
+      text-align: center;
+    }
+  </style>
+  <body>
+    <div class="agecal">
+        <label for="Date">Enter DOB:</label>
+        <input type="date" id="date" />
+        <button id="calculate">Calculate</button>
+
+      <p id="result"></p>
+      <p id="category"></p>
+    </div>
+
+    <script>
+      let calculate = document.querySelector("#calculate");
+      calculate.addEventListener("click", () => {
+        let dateValue = document.querySelector("#date").value;
+
+        if (dateValue === "") {
+          document.querySelector("#result").innerHTML =
+            "⚠️ Please enter your DOB";
+          return;
+        }
+
+        let date = new Date(document.querySelector("#date").value);
+
+        let today = new Date();
+
+        let day = today.getDate() - date.getDate();
+        let age = today.getFullYear() - date.getFullYear();
+        let month = today.getMonth() - date.getMonth();
+        if (month < 0 || today.getDate() < date.getDate()) {
+          age--;
+        }
+
+        document.querySelector("#result").innerHTML =
+          "Your age is: " +
+          day +
+          "day" +
+          " " +
+          month+" " +
+          "month" +
+          " " +
+          age +
+          " " +
+          "year old";
+
+        let category = document.querySelector("#category");
+        if (age <= 12) {
+          category.innerHTML = "You are a Child👶";
+        } else if (age <= 19) {
+          category.innerHTML = "You are a Teenager🧑";
+        } else if (age <= 29) {
+          category.innerHTML = "You are Young🌱";
+        } else if (age <= 59) {
+          category.innerHTML = "You are an Adult💼";
+        } else {
+          category.innerHTML = "You are a Senior Citizen👴";
+        }
+      });
+    </script>
+  </body>
+</html>
