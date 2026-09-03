@@ -147,7 +147,7 @@
         <label for="Weight">Weight (kg):</label>
         <input type="text" id="Weight" placeholder="Enter Weight" />
 
-        <input type="reset" value="Reset" />
+        <input type="reset" value="Reset" id="reset" />
       </form>
 
       <button onclick="calculatebmi()">Calculate BMI</button>
@@ -161,6 +161,14 @@
       function calculatebmi() {
         let height = document.querySelector("#height").value;
         let Weight = document.querySelector("#Weight").value;
+        let reset=document.querySelector("#reset");
+        let bmiresult=document.querySelector("#bmiresult");
+        reset.addEventListener("click",()=>{
+          bmicalculator.style.transition="background-color 0.8s ease-in-out";
+          bmicalculator.style.backgroundColor="#ffffff";
+          result.innerHTML = "";
+          bmiresult.innerHTML="";
+        })
 
         if (Weight == "") {
           document.querySelector("#bmiresult").innerHTML = "PLZ Enter Weight";
