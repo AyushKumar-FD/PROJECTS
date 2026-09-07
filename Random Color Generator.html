@@ -6,100 +6,120 @@
     <title>Random Color Generator</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Caacupe+One&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=Caacupe+One&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet" />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box; /* Padding aur border layout ko kharab na karein */
+        font-family: "Poppins", sans-serif;
+        font-weight: 500;
+        font-style: normal;
+      }
+      
+      main {
+        width: 100%;
+        min-height: 100vh; /* Ek page me wrap karne ke liye fix height ki jagah min-height ka use kiya */
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        align-items: center;
+        padding: 20px;
+        gap: 20px;
+      }
+
+      h1 {
+        text-align: center;
+        font-size: clamp(1.8rem, 5vw, 2.5rem); /* Heading text screen ke hisab se resize hoga */
+      }
+
+      #color {
+        width: 100%;
+        max-width: 400px; /* Badi screens par maximum 400px rhega */
+        aspect-ratio: 1 / 1; /* Box ko hamesha perfect square (400x400) rakhega mobile par bhi */
+        border-radius: 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background-color: antiquewhite;
+        transition: all 0.5s ease-in-out;
+        padding: 20px;
+      }
+
+      #colorcode {
+        font-size: clamp(1.5rem, 6vw, 2.5rem); /* Color code text box se bahar nahi aayega */
+        word-break: break-all;
+      }
+
+      #generatecolor {
+        width: 150px;
+        height: 40px;
+        border-radius: 10px;
+        border: none;
+        font-weight: 500;
+        font-size: 1rem;
+        color: white;
+        cursor: pointer;
+        background-color: #130101;
+        transition: all 0.5s ease-in-out;
+        position: relative;
+        overflow: hidden;
+      }
+
+      #generatecolor span {
+        display: block;
+        transition: all 0.5s ease;
+        z-index: -2;
+        pointer-events: none;
+      }
+
+      #generatecolor:active span {
+        transform: translateX(150%);
+      }
+
+      #generatecolor::before {
+        content: "Generate Color";
+        position: absolute;
+        top: 0%;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: left 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      }
+
+      #generatecolor:active::before {
+        left: 0;
+      }
+
+      #generatecolor:hover {
+        background-color: #f36161;
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px rgba(243, 97, 97, 0.6);
+      }
+
+      #generatecolor .liquid {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        background-color: #a14141;
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        transition: width 0.5s, height 0.5s;
+        z-index: -1;
+      }
+
+      #generatecolor:hover .liquid {
+        width: 100px;
+        height: 100px;
+      }
+    </style>
   </head>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      font-family: "Poppins", sans-serif;
-      font-weight: 500;
-      font-style: normal;
-    }
-    #color {
-      width: 400px;
-      height: 400px;
-      border-radius: 20px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      background-color: antiquewhite;
-      transition: all 0.5s ease-in-out;
-    }
-    main {
-      width: 100%;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-evenly;
-      align-items: center;
-    }
-    #generatecolor {
-      width: 150px;
-      height: 40px;
-      border-radius: 10px;
-      border: none;
-      font-weight: 500;
-      font-size: 1rem;
-      color: white;
-      cursor: pointer;
-      background-color: #130101;
-      transition: all 0.5s ease-in-out;
-
-      position: relative;
-      overflow: hidden;
-    }
-    #generatecolor span {
-      display: block;
-      transition: all 0.5s ease;
-       z-index: -2; 
-    pointer-events: none;
-    }
-    #generatecolor:active span {
-      transform: translateX(150%);
-    }
-    #generatecolor::before {
-      content: "Generate Color";
-      position: absolute;
-      top: 0%;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: left 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-    #generatecolor:active::before {
-      left: 0;
-    }
-    #generatecolor:hover {
-      background-color: #f36161;
-      transform: translateY(-3px);
-      box-shadow: 0 6px 20px rgba(243, 97, 97, 0.6);
-    }
-    #generatecolor .liquid {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 0;
-    height: 0;
-    background-color: #a14141;
-    border-radius: 50%;
-    transform: translate(-50%, -50%);
-    transition: width 0.5s, height 0.5s;
-    z-index: -1;
-}
-
-#generatecolor:hover .liquid {
-    width: 100px;
-    height: 100px;
-}
-  </style>
   <body>
     <main>
       <h1>Random Color Generator</h1>
@@ -109,23 +129,19 @@
       <button id="generatecolor">
         <div class="liquid"></div>
         <span>Generate Color</span>
-        
-    </button>
+      </button>
     </main>
 
     <script>
       let colorcode = document.querySelector("#colorcode");
       let generatecolor = document.querySelector("#generatecolor");
       let color = document.querySelector("#color");
-
       let hex = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "A", "B", "C", "D", "E", "F"];
 
       function randomcolor() {
         let hexcode = "#";
-
         for (let i = 0; i < 6; i++) {
           let rendomcode = Math.floor(Math.random() * hex.length);
-
           hexcode += hex[rendomcode];
         }
         return hexcode;
@@ -134,21 +150,18 @@
       generatecolor.addEventListener("click", () => {
         let newcolor = randomcolor();
         colorcode.textContent = newcolor;
-        color.style.boxShadow=`0 10px 50px ${newcolor}80`;
+        color.style.boxShadow = `0 10px 50px ${newcolor}80`;
         color.style.backgroundColor = newcolor;
       });
 
-const liquid = document.querySelector('.liquid');
-
-generatecolor.addEventListener('mousemove', (e) => {
-    const rect = generatecolor.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-
-    liquid.style.left = x + 'px';
-    liquid.style.top = y + 'px';
-});
-
+      const liquid = document.querySelector('.liquid');
+      generatecolor.addEventListener('mousemove', (e) => {
+        const rect = generatecolor.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        liquid.style.left = x + 'px';
+        liquid.style.top = y + 'px';
+      });
     </script>
   </body>
 </html>
