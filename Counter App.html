@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Premium 3D Counter App with Liquid Effects</title>
+    <link rel="preconnect" href="https://googleapis.com" />
+    <link rel="preconnect" href="https://gstatic.com" crossorigin />
+    <link
+      href="https://googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+        font-family: "Poppins", sans-serif;
+      }
+
+      main {
+        width: 100vw;
+        height: 100vh;
+        background: linear-gradient(135deg, #1e1e24 0%, #111115 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        overflow: hidden;
+        position: relative;
+      }
+
+      #ap {
+        font-size: clamp(2rem, 5vw, 3rem);
+        font-weight: 800;
+        color: #ffffff;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        background: linear-gradient(45deg, #ff7b00, #ffae00);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-shadow: 0 10px 20px rgba(255, 123, 0, 0.15);
+        margin-bottom: 20px;
+        z-index: 10;
+      }
+
+      #counter {
+        width: 100%;
+        max-width: 900px;
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+        padding: 20px;
+        gap: 30px;
+        z-index: 10;
+      }
+
+      /* 3D Viewport Window */
+      .counter-viewport {
+        position: relative;
+        width: clamp(200px, 40vw, 400px);
+        height: clamp(160px, 30vh, 260px);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        perspective: 1500px;
+
+        -webkit-mask-image: linear-gradient(
+          to bottom,
+          transparent 0%,
+          #fff 20%,
+          #fff 80%,
+          transparent 100%
+        );
+        mask-image: linear-gradient(
+          to bottom,
+          transparent 0%,
+          #fff 20%,
+          #fff 80%,
+          transparent 100%
+        );
+      }
+
+      /* The 3D Turning Cylinder Core */
+      .cylinder-wheel {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        transform-style: preserve-3d;
+        transition: transform 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+      }
+
+      /* Individual Number Slots */
+      .number-row {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: clamp(6rem, 15vw, 13rem);
+        font-weight: 800;
+        color: #ffffff;
+        backface-visibility: hidden;
+        user-select: none;
+        background: linear-gradient(to bottom, #ffffff 50%, #a0a0a5 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .number-row:nth-child(1) {
+        transform: rotateX(0deg) translateZ(140px);
+      }
+      .number-row:nth-child(2) {
+        transform: rotateX(90deg) translateZ(140px);
+      }
+      .number-row:nth-child(3) {
+        transform: rotateX(180deg) translateZ(140px);
+      }
+      .number-row:nth-child(4) {
+        transform: rotateX(270deg) translateZ(140px);
+      }
+
+      /* Base Controls Layout with Liquid setup */
+      #plus,
+      #minus,
+      #reset {
+        position: relative;
+        overflow: hidden;
+        cursor: pointer;
+        border: 2px solid rgba(255, 255, 255, 0.1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        z-index: 10;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.2);
+      }
+
+      #plus,
+      #minus {
+        font-size: clamp(2rem, 5vw, 3.5rem);
+        background: rgba(255, 255, 255, 0.03);
+        height: clamp(70px, 11vw, 90px);
+        width: clamp(70px, 11vw, 90px);
+        border-radius: 50%;
+        backdrop-filter: blur(10px);
+      }
+
+      #reset {
+        font-size: 1.1rem;
+        font-weight: 600;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        background: rgba(255, 255, 255, 0.05);
+        width: 150px;
+        height: 50px;
+        margin-top: 30px;
+        border-radius: 30px;
+      }
+
+      /* Liquid Layer Styles */
+      .liquid {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        transition:
+          width 0.5s ease,
+          height 0.5s ease;
+        z-index: -1;
+        pointer-events: none;
+      }
+
+      /* Text/Symbol preservation inside button */
+      #plus span,
+      #minus span,
+      #reset span {
+        position: relative;
+        z-index: 2;
+        pointer-events: none;
+      }
+
+      /* Individual Button Liquid Theme Colors & Hover Triggers */
+      #plus .liquid {
+        background-color: #ff7b00;
+      }
+      #minus .liquid {
+        background-color: #e63946;
+      }
+      #reset .liquid {
+        background-color: #3a3a42;
+      }
+
+      #plus:hover {
+        border-color: #ff7b00;
+        box-shadow: 0 0 30px rgba(255, 123, 0, 0.4);
+        transform: translateY(-5px);
+      }
+      #plus:hover .liquid {
+        width: 100px;
+        height: 100px;
+      }
+
+      #minus:hover {
+        border-color: #e63946;
+        box-shadow: 0 0 30px rgba(230, 57, 70, 0.4);
+        transform: translateY(-5px);
+      }
+      #minus:hover .liquid {
+        width: 100px;
+        height: 100px;
+      }
+
+      #reset:hover {
+        border-color: #ffffff;
+        box-shadow: 0 10px 25px rgba(255, 255, 255, 0.15);
+        transform: translateY(-3px);
+      }
+      #reset:hover .liquid {
+        width: 100px;
+        height: 100px;
+      }
+
+      #plus:active,
+      #minus:active,
+      #reset:active {
+        transform: translateY(2px) scale(0.95);
+      }
+
+      /* Soft Decorative Background Glow */
+      .bg-glow {
+        position: absolute;
+        width: 500px;
+        height: 500px;
+        background: radial-gradient(
+          circle,
+          rgba(255, 123, 0, 0.05) 0%,
+          transparent 70%
+        );
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        pointer-events: none;
+        z-index: 1;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div class="bg-glow"></div>
+      <h1 id="ap">Counter App</h1>
+
+      <div id="counter">
+        <!-- Minus Button with internal liquid elements -->
+        <button id="minus">
+          <div class="liquid"></div>
+          <span>-</span>
+        </button>
+
+        <!-- 3D Cylindrical Display Block -->
+        <div class="counter-viewport">
+          <div class="cylinder-wheel" id="wheel">
+            <div class="number-row" id="slot-0">00</div>
+            <div class="number-row" id="slot-1">01</div>
+            <div class="number-row" id="slot-2">02</div>
+            <div class="number-row" id="slot-3">00</div>
+          </div>
+        </div>
+
+        <!-- Plus Button with internal liquid elements -->
+        <button id="plus">
+          <div class="liquid"></div>
+          <span>+</span>
+        </button>
+      </div>
+
+      <!-- Reset Button with internal liquid elements -->
+      <button id="reset">
+        <div class="liquid"></div>
+        <span>Reset</span>
+      </button>
+    </main>
+
+    <script>
+      const wheel = document.getElementById("wheel");
+      const minus = document.getElementById("minus");
+      const plus = document.getElementById("plus");
+      const reset = document.getElementById("reset");
+
+      const slots = [
+        document.getElementById("slot-0"),
+        document.getElementById("slot-1"),
+        document.getElementById("slot-2"),
+        document.getElementById("slot-3"),
+      ];
+
+      let number = 0;
+      let currentRotationAngle = 0;
+
+      function formatNumber(num) {
+        return num < 10 && num >= 0 ? `0${num}` : num;
+      }
+
+      function renderWheelLabels() {
+        const activeSlotIndex =
+          ((Math.abs(currentRotationAngle / 90) % 4) + 4) % 4;
+
+        slots[activeSlotIndex].textContent = formatNumber(number);
+        slots[(activeSlotIndex + 1) % 4].textContent = formatNumber(number + 1);
+        slots[(activeSlotIndex + 2) % 4].textContent = formatNumber(number + 2);
+        slots[(activeSlotIndex + 3) % 4].textContent = formatNumber(number - 1);
+      }
+
+      renderWheelLabels();
+
+      // Core Mechanics Click Listeners
+      plus.addEventListener("click", () => {
+        number++;
+        currentRotationAngle -= 90;
+        wheel.style.transform = `rotateX(${currentRotationAngle}deg)`;
+        renderWheelLabels();
+      });
+
+      minus.addEventListener("click", () => {
+        if (number > 0) {
+          number--;
+          currentRotationAngle += 90;
+          wheel.style.transform = `rotateX(${currentRotationAngle}deg)`;
+          renderWheelLabels();
+        }
+      });
+
+      reset.addEventListener("click", () => {
+        if (number === 0) return;
+        number = 0;
+        currentRotationAngle = 0;
+        wheel.style.transform = `rotateX(0deg)`;
+        renderWheelLabels();
+      });
+
+      // Liquid Mouse Tracker Engine for all 3 buttons
+      const interactiveButtons = [plus, minus, reset];
+      interactiveButtons.forEach((btn) => {
+        const liquidLayer = btn.querySelector(".liquid");
+        btn.addEventListener("mousemove", (e) => {
+          const rect = btn.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          liquidLayer.style.left = x + "px";
+          liquidLayer.style.top = y + "px";
+        });
+      });
+    </script>
+  </body>
+</html>
