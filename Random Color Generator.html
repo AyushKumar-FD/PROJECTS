@@ -11,7 +11,7 @@
       * {
         margin: 0;
         padding: 0;
-        box-sizing: border-box; /* Padding aur border layout ko kharab na karein */
+        box-sizing: border-box;
         font-family: "Poppins", sans-serif;
         font-weight: 500;
         font-style: normal;
@@ -19,7 +19,7 @@
       
       main {
         width: 100%;
-        min-height: 100vh; /* Ek page me wrap karne ke liye fix height ki jagah min-height ka use kiya */
+        min-height: 100vh; 
         display: flex;
         flex-direction: column;
         justify-content: space-evenly;
@@ -30,13 +30,13 @@
 
       h1 {
         text-align: center;
-        font-size: clamp(1.8rem, 5vw, 2.5rem); /* Heading text screen ke hisab se resize hoga */
+        font-size: clamp(1.8rem, 5vw, 2.5rem); 
       }
 
       #color {
         width: 100%;
-        max-width: 400px; /* Badi screens par maximum 400px rhega */
-        aspect-ratio: 1 / 1; /* Box ko hamesha perfect square (400x400) rakhega mobile par bhi */
+        max-width: 400px; 
+        aspect-ratio: 1 / 1; 
         border-radius: 20px;
         display: flex;
         flex-direction: column;
@@ -48,7 +48,7 @@
       }
 
       #colorcode {
-        font-size: clamp(1.5rem, 6vw, 2.5rem); /* Color code text box se bahar nahi aayega */
+        font-size: clamp(1.5rem, 6vw, 2.5rem); 
         word-break: break-all;
       }
 
