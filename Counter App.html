@@ -81,7 +81,7 @@
         );
       }
 
-      /* The 3D Turning Cylinder Core */
+      
       .cylinder-wheel {
         position: relative;
         width: 100%;
@@ -90,7 +90,7 @@
         transition: transform 0.6s cubic-bezier(0.19, 1, 0.22, 1);
       }
 
-      /* Individual Number Slots */
+      
       .number-row {
         position: absolute;
         width: 100%;
@@ -121,7 +121,7 @@
         transform: rotateX(270deg) translateZ(140px);
       }
 
-      /* Base Controls Layout with Liquid setup */
+     
       #plus,
       #minus,
       #reset {
@@ -159,7 +159,7 @@
         border-radius: 30px;
       }
 
-      /* Liquid Layer Styles */
+     
       .liquid {
         position: absolute;
         top: 50%;
@@ -175,7 +175,7 @@
         pointer-events: none;
       }
 
-      /* Text/Symbol preservation inside button */
+     
       #plus span,
       #minus span,
       #reset span {
@@ -184,7 +184,7 @@
         pointer-events: none;
       }
 
-      /* Individual Button Liquid Theme Colors & Hover Triggers */
+     
       #plus .liquid {
         background-color: #ff7b00;
       }
@@ -231,7 +231,7 @@
         transform: translateY(2px) scale(0.95);
       }
 
-      /* Soft Decorative Background Glow */
+      
       .bg-glow {
         position: absolute;
         width: 500px;
@@ -255,13 +255,13 @@
       <h1 id="ap">Counter App</h1>
 
       <div id="counter">
-        <!-- Minus Button with internal liquid elements -->
+        
         <button id="minus">
           <div class="liquid"></div>
           <span>-</span>
         </button>
 
-        <!-- 3D Cylindrical Display Block -->
+       
         <div class="counter-viewport">
           <div class="cylinder-wheel" id="wheel">
             <div class="number-row" id="slot-0">00</div>
@@ -271,14 +271,14 @@
           </div>
         </div>
 
-        <!-- Plus Button with internal liquid elements -->
+        
         <button id="plus">
           <div class="liquid"></div>
           <span>+</span>
         </button>
       </div>
 
-      <!-- Reset Button with internal liquid elements -->
+     
       <button id="reset">
         <div class="liquid"></div>
         <span>Reset</span>
@@ -317,7 +317,7 @@
 
       renderWheelLabels();
 
-      // Core Mechanics Click Listeners
+     
       plus.addEventListener("click", () => {
         number++;
         currentRotationAngle -= 90;
@@ -342,7 +342,7 @@
         renderWheelLabels();
       });
 
-      // Liquid Mouse Tracker Engine for all 3 buttons
+      
       const interactiveButtons = [plus, minus, reset];
       interactiveButtons.forEach((btn) => {
         const liquidLayer = btn.querySelector(".liquid");
